@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reviewer: one
+  lecture: one
+  reviewed: false
+  form: MyString
+
+two:
+  reviewer: two
+  lecture: two
+  reviewed: false
+  form: MyString

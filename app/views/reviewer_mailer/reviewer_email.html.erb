@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reviewer email</title>
+</head>
+<body>
+  <p>Hi <%= @reviewer.name || @reviewer.email%>, </p>
+
+  <p>You have been requested to submit a review for the <%= @lecture.title %> that was given on <%= @lecture.date%>. Please use fill out the following Google Form: <a href="https://docs.google.com/forms/u/1/d/1ic3zfltKaHYCLBMIRg5Pbte4_RShLkHUe8Hqbn51OMs/edit?usp=drive_open&ths=true">Peer Observation Form</a></p>
+
+</body>
+</html>

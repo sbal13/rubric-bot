@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lecturer: one
+  date: 2018-10-18 21:43:23
+  title: MyString
+  class: one
+
+two:
+  lecturer: two
+  date: 2018-10-18 21:43:23
+  title: MyString
+  class: two
