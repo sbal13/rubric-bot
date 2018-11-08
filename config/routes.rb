@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  get "/scripts", to: "calendar#scripts"
-  get "/calendar", to: "calendar#get_cal"
+	get "/set_env", to: "calendar#set_env"
+	get "/calendar", to: "calendar#get_cal"
 end

@@ -2,6 +2,10 @@ class CalendarInviter
 		def self.get_data
 			calendar_events = GoogleCalendar.get_calendars
 
+			if calendar_events.class == String
+				return calendar_events
+			end
+			
 			calendar_lectures = {}
 			calendar_events.each do |calendar_name, events|
 

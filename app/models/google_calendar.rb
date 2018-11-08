@@ -26,9 +26,28 @@ class GoogleCalendar
 		credentials = authorizer.get_credentials(user_id)
 		if credentials.nil?
 			url = authorizer.get_authorization_url(base_url: OOB_URI)
-			puts 'Open the following URL in the browser and enter the ' \
-					 "resulting code after authorization:\n" + url
-			code = gets
+			return url
+			# puts 'Open the following URL in the browser and enter the ' \
+			# 		 "resulting code after authorization:\n" + url
+			# code = gets
+
+
+			# credentials = authorizer.get_and_store_credentials_from_code(
+			# 	user_id: user_id, code: code, base_url: OOB_URI
+			# )
+		end
+
+		credentials
+	end
+
+	def self.set_credentials(code)
+		client_id = Google::Auth::ClientId.new(ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"])
+		token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
+		authorizer = Google::Auth::UserAuthorizer.new(client_id, SCOPE, token_store)
+		user_id = 'default'
+		credentials = authorizer.get_credentials(user_id)
+
+		if credentials.nil?
 			credentials = authorizer.get_and_store_credentials_from_code(
 				user_id: user_id, code: code, base_url: OOB_URI
 			)
@@ -39,7 +58,13 @@ class GoogleCalendar
 	def self.get_calendars
 		service = Google::Apis::CalendarV3::CalendarService.new
 		service.client_options.application_name = APPLICATION_NAME
-		service.authorization = self.authorize
+		creds = self.authorize
+
+		if creds.class == String
+			return creds
+		else
+			service.authorization = self.authorize
+		end
 
 		calendars = service.list_calendar_lists
 
