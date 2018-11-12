@@ -18,6 +18,7 @@ gem 'puma', '~> 3.11'
 gem "rest-client"
 gem "mailjet"
 gem 'dotenv-rails'
+# gem 'capybara', '~> 3.10', '>= 3.10.1'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

@@ -12,17 +12,10 @@ class MailjetMailer
     campus = nil
     course = nil
 
-    if lecture.lecturer.name
-      lecturer_name = lecture.lecturer.name
-    else
-      at_index = lecture.lecturer.email.index("@")
-
-      lecturer_name = lecture.lecturer.email.slice(0, at_index)
-                      .gsub(".", " ")
-                      .titleize
-    end
-
+    lecturer_name = lecture.lecturer.name || lecture.lecturer.name_from_email
     lecturer_name_for_URL = lecturer_name.gsub(" ", "+")
+
+    reviewer_name = reviewer.name || reviewer.name_from_email
 
     form_link = "https://docs.google.com/forms/d/e/1FAIpQLSeIxrWlJumSdU7p8PAEsLrjcOWMWPwkhskT8TyQcMjbM0XZsw/viewform?
     usp=pp_url"
@@ -32,6 +25,8 @@ class MailjetMailer
     form_link += "&entry.1311120359=#{lecture.title}"
     form_link += "&entry.1414070469=#{lecturer_name_for_URL}"
     
+    email_body = "
+    You have been requested to submit a review for the #{lecture.title} lecture that was given on #{lecture.date.strftime("%m/%d/%Y")}. Please use fill out the following Google Form:"
 
     Mailjet::Send.create(messages: [{
     'From'=> {
@@ -41,15 +36,15 @@ class MailjetMailer
     'To'=> [
         {
             'Email'=> reviewer.email,
-            'Name'=> reviewer.name || reviewer.email
+            'Name'=> reviewer_name
         }
     ],
     'Subject'=> "Invitation to Review #{lecture.title} Lecture",
     'HTMLPart'=> "
       <body>
-        <p>Hi #{reviewer.name || reviewer.email}, </p>
+        <p>Hi #{reviewer_name}, </p>
 
-        <p>You have been requested to submit a review for the #{lecture.title} that was given on #{lecture.date}. Please use fill out the following Google Form: 
+        <p> #{email_body}
           <a href='#{form_link}'>Peer Observation Form</a>
         </p>
       </body>
