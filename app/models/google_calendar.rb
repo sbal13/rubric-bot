@@ -1,6 +1,6 @@
 require 'google/apis/calendar_v3'
 require 'googleauth'
-require 'googleauth/stores/file_token_store'
+require 'googleauth/stores/redis_token_store'
 require 'fileutils'
 
 OOB_URI = 'https://rubric-bot.herokuapp.com'.freeze
@@ -11,7 +11,7 @@ SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY
 class GoogleCalendar
 	def self.authorize
 		client_id = Google::Auth::ClientId.new(ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"])
-		token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
+		token_store = Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
 		authorizer = Google::Auth::UserAuthorizer.new(client_id, SCOPE, token_store)
 		user_id = 'default'
 		credentials = authorizer.get_credentials(user_id)
@@ -25,7 +25,7 @@ class GoogleCalendar
 
 	def self.set_credentials(code)
 		client_id = Google::Auth::ClientId.new(ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"])
-		token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
+		token_store = Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
 		authorizer = Google::Auth::UserAuthorizer.new(client_id, SCOPE, token_store)
 		user_id = 'default'
 		credentials = authorizer.get_credentials(user_id)
